@@ -50,7 +50,7 @@ GROQ_VISION_MODEL = os.environ.get("GROQ_VISION_MODEL", "llama-3.2-90b-vision-pr
 
 # Fallback model when Groq is rate-limited. Flash is the free-tier workhorse —
 # cheap/fast and not the heavily-capped Pro tier.
-GEMINI_FALLBACK_MODEL = "gemini-1.5-flash"
+GEMINI_FALLBACK_MODEL = "gemini-2.5-flash"
 
 # --- Security / limits ----------------------------------------------------
 # Optional shared-secret auth. Off by default so this doesn't break an
