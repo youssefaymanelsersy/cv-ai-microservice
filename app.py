@@ -45,12 +45,8 @@ if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
 
 # --- Model IDs -----------------------------------------------------------
-# llama-3.3-70b-versatile is deprecated by Groq, shutdown date 08/16/26.
-# llama-3.2-90b-vision-preview was already shut down 04/14/25 — its
-# replacement (llama-4-scout) was *also* deprecated 07/17/26. Re-check
-# https://console.groq.com/docs/deprecations before your next migration.
-GROQ_TEXT_MODEL = os.environ.get("GROQ_TEXT_MODEL", "openai/gpt-oss-120b")
-GROQ_VISION_MODEL = os.environ.get("GROQ_VISION_MODEL", "qwen/qwen3.6-27b")
+GROQ_TEXT_MODEL = os.environ.get("GROQ_TEXT_MODEL", "llama-3.3-70b-versatile")
+GROQ_VISION_MODEL = os.environ.get("GROQ_VISION_MODEL", "llama-3.2-90b-vision-preview")
 
 # Fallback model when Groq is rate-limited. Flash is the free-tier workhorse —
 # cheap/fast and not the heavily-capped Pro tier.
