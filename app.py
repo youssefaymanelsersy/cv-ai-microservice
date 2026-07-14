@@ -50,7 +50,7 @@ GROQ_VISION_MODEL = os.environ.get("GROQ_VISION_MODEL", "llama-3.2-90b-vision-pr
 
 # Fallback model when Groq is rate-limited. Flash is the free-tier workhorse —
 # cheap/fast and not the heavily-capped Pro tier.
-GEMINI_FALLBACK_MODEL = "gemini-2.5-flash"
+GEMINI_FALLBACK_MODEL = "gemini-1.5-flash"
 
 # --- Security / limits ----------------------------------------------------
 # Optional shared-secret auth. Off by default so this doesn't break an
@@ -784,7 +784,7 @@ async def optimize_cv(
         raise
     except Exception as e:
         logger.exception("optimize_cv failed")
-        raise HTTPException(status_code=500, detail="Failed to optimize CV. Please try again.")
+        raise HTTPException(status_code=500, detail=f"Failed to optimize CV. Error: {str(e)}")
 
 
 app.include_router(router)
