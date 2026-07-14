@@ -120,9 +120,10 @@ def _chat_completion_json(system_prompt: str, user_content: str, max_tokens: int
         )
         return chat_completion.choices[0].message.content
     except Exception as exc:
-        if not (GEMINI_API_KEY and _is_rate_limit_error(exc)):
+        if not GEMINI_API_KEY:
             raise
 
+        logger.warning("Groq failed (%s), falling back to Gemini...", exc)
         gemini_model = genai.GenerativeModel(
             GEMINI_FALLBACK_MODEL,
             system_instruction=system_prompt,
@@ -160,8 +161,9 @@ def _vision_extract_text(image_bytes: bytes, mime_type: str = "image/jpeg") -> s
         )
         return vision_completion.choices[0].message.content
     except Exception as exc:
-        if not (GEMINI_API_KEY and _is_rate_limit_error(exc)):
+        if not GEMINI_API_KEY:
             raise
+        logger.warning("Groq vision failed (%s), falling back to Gemini...", exc)
         gemini_model = genai.GenerativeModel(GEMINI_FALLBACK_MODEL)
         response = gemini_model.generate_content(
             [{"mime_type": mime_type, "data": image_bytes}, prompt]
@@ -512,7 +514,7 @@ async def evaluate_cv(file: UploadFile = File(...)):
         response_text = _chat_completion_json(
             system_prompt=system_prompt,
             user_content=f"Evaluate this CV:\n\n{cv_text}",
-            max_tokens=900,
+            max_tokens=1500,
         )
 
         result = AtsScoreOutput.model_validate_json(response_text)
