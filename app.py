@@ -741,7 +741,7 @@ async def optimize_cv(
         response_text = _chat_completion_json(
             system_prompt=system_prompt,
             user_content=user_content,
-            max_tokens=3000,
+            max_tokens=6000,
         )
         llm_output = _OptimizationLLMOutput.model_validate_json(response_text)
         optimized = llm_output.data
