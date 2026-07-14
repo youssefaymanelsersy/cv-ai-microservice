@@ -21,6 +21,20 @@ load_dotenv()
 # =========================================================================
 # Config
 # =========================================================================
+_CONTACT_REGEX = re.compile(r'[\w\.-]+@[\w\.-]+|\+?\d{10,15}|linkedin\.com', re.IGNORECASE)
+
+CV_PARSE_SYSTEM_PROMPT_TEMPLATE = """
+You are an expert ATS CV parser. Extract information from the CV text into this exact JSON structure:
+{schema}
+
+RULES:
+1. Use null for missing/unknown values. Never use empty strings.
+2. All strings must be at least 1 character, or null.
+3. `links` object must always be present, even with all-null fields.
+4. Copy values as they appear in the CV — do not paraphrase, summarize, embellish, or add commentary.
+5. For `summary`, extract the CV's existing summary/objective verbatim if present; otherwise null. Do not generate a new one.
+6. `description` fields (experience/projects): condense to 1-2 short sentences max, using the CV's own wording. Do not invent details not in the source text.
+"""
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 logger = logging.getLogger("cv-ai-microservice")
 
